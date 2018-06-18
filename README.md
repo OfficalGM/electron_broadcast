@@ -18,6 +18,6 @@
 ---------------------------------------
 ### 安裝、啟動說明
 * 安裝
-*     npm install
+  npm install
 * 啟動
-*     npm run start2
+  npm run start2
