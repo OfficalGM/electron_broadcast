@@ -5,11 +5,14 @@ const ipc = electron.ipcMain
 const url = require('url');
 const path = require('path');
 const express=require('express');
-const http =express();
+
 let win
-http.use('/',express.static('public'));
+
+
 ipc.on('start_server', (sys, msg) => {
   console.log(msg)
+  const http =express();
+  http.use('/',express.static('public'));
   let ip = msg[0]
   let port = msg[1]
   http.get('/', function(req, res) {
@@ -25,25 +28,29 @@ ipc.on('start_server', (sys, msg) => {
 
 function createWindow() {
   win = new BrowserWindow({
-    title: "廣播",
-    width: 600,
-    height: 600,
+    title: "螢幕廣播",
+    width: 1000,
+    height: 800,
     fullscreen: false,
     fullscreenable: false,
     minHeight: 600,
     minWidth: 600,
     maxWidth: 600,
     maxHeight: 600,
+    webPreferences:{
+      nodeIntegration:false,
+      preload:__dirname+'/preload.js'
+    }
 
   })
 
-
+ 
   electron.Menu.setApplicationMenu(null);
   win.loadURL(url.format({
-    pathname: path.join(process.cwd(), 'index.html'),
+    pathname: path.join(process.cwd(), 'dist/index.html'),
     protocol: 'file',
   }));
-  win.webContents.openDevTools()
+  // win.webContents.openDevTools()
 
   win.on('close', () => {
     win = null
